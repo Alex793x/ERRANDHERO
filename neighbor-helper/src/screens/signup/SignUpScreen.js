@@ -31,7 +31,18 @@ const SignUpScreen = ({ navigation }) => {
     const [error, setError] = useState('');
 
     const handleSignUp = () => {
-        const isFormValid = Object.values(formValues).every(validate);
+        let isFormValid = true;
+        for (const [key, value] of Object.entries(formValues)) {
+            const isValid = validate(key, value);
+            console.log(`${key}: ${isValid}`);
+            if (!isValid) {
+                isFormValid = false;
+            }
+        }
+        console.log('Form values:', formValues);
+        console.log('Form is valid:', isFormValid);
+
+
         if (isFormValid) {
             createUserWithEmailAndPassword(auth, formValues.email, formValues.password)
                 .then((userCredential) => {
@@ -138,6 +149,6 @@ const SignUpScreen = ({ navigation }) => {
             </SlideUp>
         </KeyboardAvoidingView>
     );
-};
+}
 
 export default SignUpScreen;
