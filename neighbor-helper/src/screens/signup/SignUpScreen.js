@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
     TextInput,
     Text,
@@ -11,6 +11,7 @@ import {auth, db} from '../../firebase/firebaseConfig';
 import {validate} from "../../components/data_validator/CredentialValidator";
 import {doc, setDoc} from 'firebase/firestore'
 import {createUserWithEmailAndPassword} from 'firebase/auth';
+import {getCurrentLocation} from "../../components/data_validator/GEOLocalizer";
 import SlideUp from "../../components/slideupeffect/SlideUpEffect";
 import {styles} from './styles';
 
@@ -30,6 +31,21 @@ const SignUpScreen = ({ navigation }) => {
     });
     const [error, setError] = useState('');
 
+    const [country, setCountry] = useState(''); // Add a new state for the country
+
+    // Use useEffect to call getCurrentLocation when the component mounts
+    useEffect(() => {
+        const fetchCountry = async () => {
+            const fetchedCountry = await getCurrentLocation();
+            if (fetchedCountry) {
+                setCountry(fetchedCountry);
+            }
+        };
+
+        fetchCountry();
+    }, []);
+
+
     const handleSignUp = () => {
         let isFormValid = true;
         for (const [key, value] of Object.entries(formValues)) {
@@ -37,6 +53,7 @@ const SignUpScreen = ({ navigation }) => {
             console.log(`${key}: ${isValid}`);
             if (!isValid) {
                 isFormValid = false;
+                console.log(`You can't enter ${value} for ${key}, please try something else.`)
             }
         }
         console.log('Form values:', formValues);
@@ -130,8 +147,8 @@ const SignUpScreen = ({ navigation }) => {
                     <TextInput
                         style={styles.input}
                         placeholder="Country"
-                        value={formValues.country}
-                        onChangeText={(value) => setFormValues({...formValues, country: value})}
+                        value={country}
+                        onChangeText={(value) => setFormValues({...formValues, country: this.local.country})}
                     />
                     <TextInput
                         style={styles.input}
@@ -140,7 +157,7 @@ const SignUpScreen = ({ navigation }) => {
                         onChangeText={(value) => setFormValues({...formValues, phoneNum: value})}
                     />
                     <TouchableOpacity
-                        style={[styles.button, {margin: 50, marginBottom: 100}]}
+                        style={[styles.button, {margin: 50, marginBottom: 200}]}
                         onPress={handleSignUp}>
                         <Text style={styles.buttonText}>Sign Up</Text>
                     </TouchableOpacity>
