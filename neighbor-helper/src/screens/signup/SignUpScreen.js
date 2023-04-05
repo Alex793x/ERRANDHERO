@@ -148,7 +148,6 @@ const SignUpScreen = ({ navigation }) => {
                         style={styles.input}
                         placeholder="Country"
                         value={country}
-                        onChangeText={(value) => setFormValues({...formValues, country: this.local.country})}
                     />
                     <TextInput
                         style={styles.input}
