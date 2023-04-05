@@ -1,45 +1,58 @@
-import { StyleSheet, Dimensions } from 'react-native';
-const { width } = Dimensions.get('window');
+import {Dimensions, StyleSheet} from 'react-native';
+
+const {width, height} = Dimensions.get('window');
 
 export const styles = StyleSheet.create({
-    container: {
-        flexGrow: 1,
-        alignItems: "center",
-        justifyContent: "center",
-        paddingHorizontal: 20,
-    },
-    image: {
-        width: '110%',
-        height: width * 0.6,
-        resizeMode: 'cover',
-        marginBottom: 50,
-    },
-    formWrapper: {
-        width: '100%',
+    contentContainer: {
+        flex: 1,
+        justifyContent: 'center',
         alignItems: 'center',
+        paddingHorizontal: '10%',
+        paddingTop: '10%'
+    },
+    headerContainer: {
+        paddingBottom: '10%',
+        alignItems: "center"
+    },
+    header: {
+        fontSize: 28,
+        fontWeight: "bold",
+    },
+    headerDescription: {
+        fontSize: 15,
+        fontWeight: '100'
+    },
+    credentialInputContainer: {
+        width: '100%',
+        marginBottom: '8%'
+    },
+    credentialHeader: {
+        fontSize: 15,
+        color: '#333333',
+        fontWeight: '100',
+        marginBottom: '2%'
     },
     input: {
-        borderWidth: 1,
-        borderColor: "gray",
-        padding: 10,
+        alignItems: 'flex-start',
+        padding: 5,
         marginBottom: 10,
         width: '100%',
+        backgroundColor: '#D9D9D9',
+        borderRadius: 10
     },
     button: {
-        backgroundColor: 'blue',
-        width: '30%',
+        backgroundColor: '#FEEFA6',
+        width: '40%',
         padding: 10,
         borderRadius: 10,
         alignItems: 'center',
         justifyContent: 'center',
-        marginTop: 10,
+        marginVertical: 20,
     },
     buttonText: {
-        color: 'white',
+        color: '#333333',
         fontSize: 17,
+        fontWeight: "bold"
     },
-    error: {
-        color: 'red',
-        marginTop: 10,
-    },
-});
+
+})

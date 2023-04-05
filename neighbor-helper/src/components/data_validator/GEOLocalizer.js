@@ -10,7 +10,7 @@ export const getCurrentLocation = async () => {
 
             if (data && data.address && data.address.country) {
                 console.log("Country:", data.address.country);
-                return data.address.country;
+                return data.address.country
             } else {
                 console.log("Country not found");
             }

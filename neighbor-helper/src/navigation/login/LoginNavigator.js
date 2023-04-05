@@ -1,25 +1,76 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import AccountScreen from "../../screens/account/AccountScreen";
+import LogInScreen from "../../screens/signin/LogInScreen";
+import FirstTimeView from './FirstTimeView'
+import HomeScreen from '../../screens/home/HomeScreen'
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import signUpScreen from "../../screens/signup/SignUpScreen";
 import SignUpScreen from "../../screens/signup/SignUpScreen";
-import SignInScreen from "../../screens/signin/SignInScreen";
-import LoginOptions from './LoginOptions'
-import HomeScreen from '../../screens/Home/HomeScreen'
+
 
 
 const Stack = createNativeStackNavigator();
 const LoginNavigator = () => {
+    // const [firstLaunch, setFirstLaunch] = useState(null);
+    //
+    // useEffect(() => {
+    //     const checkFirstLaunch = async () => {
+    //         const isFirstLaunch = await AsyncStorage.getItem("alreadyLaunched");
+    //         if (isFirstLaunch === null) {
+    //             setFirstLaunch(true);
+    //             await AsyncStorage.setItem("alreadyLaunched", "true");
+    //         } else {
+    //             setFirstLaunch(false);
+    //         }
+    //     };
+    //     checkFirstLaunch();
+    // }, []);
+    //
+    // if (firstLaunch === null) {
+    //     return null;
+    // }
 
     return (
         <NavigationContainer>
             <Stack.Navigator>
-                <Stack.Screen name={"LoginOptions"} component={LoginOptions} />
-                <Stack.Screen name={"SignUpScreen"} component={SignUpScreen} />
-                <Stack.Screen name={"SignInScreen"} component={SignInScreen} />
-                <Stack.Screen name={"HomeScreen"} component={HomeScreen} />
+                {/*{firstLaunch ? (*/}
+                {/*    <Stack.Screen*/}
+                {/*        name={"FirstTimeView"}*/}
+                {/*        component={FirstTimeView}*/}
+                {/*        options={{ headerShown: false }}*/}
+                {/*    />*/}
+                {/*) : (*/}
+                {/*    <Stack.Screen*/}
+                {/*        name={"LogInScreen"}*/}
+                {/*        component={LogInScreen}*/}
+                {/*        options={{ headerShown: false }}*/}
+                {/*    />*/}
+                {/*)}*/}
+                <Stack.Screen
+                    name={"FirstTimeView"}
+                    component={FirstTimeView}
+                    options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                    name={"LogInScreen"}
+                    component={LogInScreen}
+                    options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                    name={"SignUpScreen"}
+                    component={SignUpScreen}
+                    options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                    name={"HomeScreen"}
+                    component={HomeScreen}
+                    options={{ headerShown: false }}
+                />
             </Stack.Navigator>
         </NavigationContainer>
-    )
-}
+    );
+};
 
-export default LoginNavigator
+export default LoginNavigator;

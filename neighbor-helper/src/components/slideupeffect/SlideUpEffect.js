@@ -3,7 +3,7 @@ import {Animated} from 'react-native';
 import {useFocusEffect} from '@react-navigation/native';
 import {styles} from "./styles";
 
-const SlideUp = ({children, translateYValue = -0, duration = 600}) => {
+const SlideUp = ({children, translateYValue = 0, duration = 600}) => {
     const slideUpAnim = useRef(new Animated.Value(800)).current;
 
     const handleSlideUp = () => {
