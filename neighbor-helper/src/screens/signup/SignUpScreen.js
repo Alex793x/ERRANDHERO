@@ -7,7 +7,7 @@ import SlideUp from "../../components/slideupeffect/SlideUpEffect";
 import {createUserWithEmailAndPassword} from "firebase/auth";
 import {doc, setDoc} from "firebase/firestore";
 
-const SignUpScreen = (navigation) => {
+const SignUpScreen = ({navigation}) => {
     const [formValues, setFormValues] = useState({
         name: '',
         username: '',
@@ -42,7 +42,7 @@ const SignUpScreen = (navigation) => {
                 .catch((error) => {
                     const errorCode = error.code;
                     const errorMessage = error.message;
-                    console.log('Sign in failed', errorCode);
+                    console.log('Sign up failed', errorCode);
                     setError(errorMessage);
                 });
         }
@@ -117,7 +117,6 @@ const SignUpScreen = (navigation) => {
 
                 </ScrollView>
             </SlideUp>
-
         </ImageBackground>
     )
 }

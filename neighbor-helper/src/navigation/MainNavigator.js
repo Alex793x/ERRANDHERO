@@ -1,18 +1,17 @@
-import React, {useEffect, useState} from "react";
+import React from "react";
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import AccountScreen from "../../screens/account/AccountScreen";
-import LogInScreen from "../../screens/signin/LogInScreen";
-import FirstTimeView from './FirstTimeView'
-import HomeScreen from '../../screens/home/HomeScreen'
+import AccountScreen from "../screens/account/AccountScreen";
+import LogInScreen from "../screens/signin/LogInScreen";
+import FirstTimeView from './login/FirstTimeView'
+import HomeScreen from '../screens/home/HomeScreen'
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import signUpScreen from "../../screens/signup/SignUpScreen";
-import SignUpScreen from "../../screens/signup/SignUpScreen";
+import SignUpScreen from "../screens/signup/SignUpScreen";
 
 
 
 const Stack = createNativeStackNavigator();
-const LoginNavigator = () => {
+const MainNavigator = () => {
     // const [firstLaunch, setFirstLaunch] = useState(null);
     //
     // useEffect(() => {
@@ -73,4 +72,4 @@ const LoginNavigator = () => {
     );
 };
 
-export default LoginNavigator;
+export default MainNavigator;
