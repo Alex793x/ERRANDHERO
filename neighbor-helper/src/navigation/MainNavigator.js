@@ -1,12 +1,11 @@
 import React from "react";
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import AccountScreen from "../screens/account/AccountScreen";
 import LogInScreen from "../screens/signin/LogInScreen";
-import FirstTimeView from './login/FirstTimeView'
-import HomeScreen from '../screens/home/HomeScreen'
+import FirstTimeView from '../screens/splash/FirstTimeView'
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import SignUpScreen from "../screens/signup/SignUpScreen";
+import BottomTabNavigator from "./BottomTabNavigator";
 
 
 
@@ -63,9 +62,9 @@ const MainNavigator = () => {
                     options={{ headerShown: false }}
                 />
                 <Stack.Screen
-                    name={"HomeScreen"}
-                    component={HomeScreen}
-                    options={{ headerShown: false }}
+                    name={"BottomTabNavigator"}
+                    component={BottomTabNavigator}
+                    options={{headerShown: false}}
                 />
             </Stack.Navigator>
         </NavigationContainer>

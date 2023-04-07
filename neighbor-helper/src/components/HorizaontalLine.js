@@ -9,11 +9,12 @@ const HorizontalLine = () => {
 
 const styles = StyleSheet.create({
     line: {
-        borderBottomColor: 'black',
+        borderBottomColor: '#727272',
         borderBottomWidth: 1,
         width: '100%',
         alignSelf: 'center',
-        marginVertical: 10, // Add some margin to separate the line from other components
+        marginVertical: 4, // Add some margin to separate the line from other components
+        opacity: 0.3
     },
 });
 

@@ -1,38 +1,28 @@
 import React, {useEffect, useState} from 'react';
-import {
-    TextInput,
-    Text,
-    TouchableOpacity,
-    KeyboardAvoidingView,
-    Platform, ScrollView, ImageBackground,
-} from 'react-native';
-import { auth, db} from '../../firebase/firebaseConfig';
+import {Image, ImageBackground, ScrollView, Text, TextInput, TouchableOpacity, View} from 'react-native';
 import {validate} from "../../components/data_validator/CredentialValidator";
 import {doc, setDoc} from 'firebase/firestore'
-import {createUserWithEmailAndPassword} from 'firebase/auth';
 import {getCurrentLocation} from "../../components/data_validator/GEOLocalizer";
-import SlideUp from "../../components/slideupeffect/SlideUpEffect";
 import {styles} from './styles';
+import HorizontalLine from "../../components/HorizaontalLine";
+import ProfileImagePicker from "../../components/ProfileImagePicker";
+import {db, auth} from "../../firebase/firebaseConfig";
 
 const AccountScreen = ({ navigation }) => {
     const [formValues, setFormValues] = useState({
-        firstName: '',
-        lastName: '',
+        name: '',
+        email: '',
         streetAddress: '',
         houseNum: '',
-        apartmentFloor: '',
+        apartmentSide: '',
+        zipCode: '',
         city: '',
-        postNum: '',
         country: '',
-        phoneNum: '',
-        email: '',
-        password: '',
     });
     const [error, setError] = useState('');
 
-    const [country, setCountry] = useState(''); // Add a new state for the country
+    const [country, setCountry] = useState('');
 
-    // Use useEffect to call getCurrentLocation when the component mounts
     useEffect(() => {
         const fetchCountry = async () => {
             const fetchedCountry = await getCurrentLocation();
@@ -40,12 +30,10 @@ const AccountScreen = ({ navigation }) => {
                 setCountry(fetchedCountry);
             }
         };
-
         fetchCountry();
     }, []);
 
-
-    const handleSignUp = () => {
+    const validateAndSetAccountInfo = async () => {
         let isFormValid = true;
         for (const [key, value] of Object.entries(formValues)) {
             const isValid = validate(key, value);
@@ -58,112 +46,109 @@ const AccountScreen = ({ navigation }) => {
         console.log('Form values:', formValues);
         console.log('Form is valid:', isFormValid);
 
-
         if (isFormValid) {
-            createUserWithEmailAndPassword(auth, formValues.email, formValues.password)
-                .then((userCredential) => {
-                    const user = userCredential.user;
-                    console.log('Sign up successfully - ', user);
-                    setDoc(doc(db, 'users', user.uid), formValues);
-                    navigation.navigate('HomeScreen');
-                })
-                .catch((error) => {
-                    const errorCode = error.code;
-                    const errorMessage = error.message;
-                    console.log('Sign in failed', errorCode);
-                    setError(errorMessage);
-                });
+            const user = auth.currentUser;
+            const uid = user.uid;
+            setDoc(doc(db, 'users', uid), formValues);
         }
     };
 
     return (
-        <ImageBackground source={require('../../assets/images/AccountBackground.png')}>
-            <KeyboardAvoidingView
-                style={styles.container}
-                behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-                <SlideUp>
-                    <ScrollView
-                        contentContainerStyle={styles.container}
-                        style={{width: '100%'}}
-                        showsVerticalScrollIndicator={false}
-                        showsHorizontalScrollIndicator={false}
+        <ImageBackground
+            source={require('../../assets/images/AccountBackground.png')}
+            style={styles.contentContainer}
+        >
+            <View style={styles.headerContainer}>
+                <ProfileImagePicker/>
+                <Text style={styles.header}>
+                    Account info
+                </Text>
+            </View>
+            <ScrollView
+                showsVerticalScrollIndicator={false}
+                showsHorizontalScrollIndicator={false}
+            >
+                <View style={styles.credentialInputContainer}>
+                    <HorizontalLine/>
+                    <TextInput
+                        value={formValues.name}
+                        onChangeText={(value) => setFormValues({ ...formValues, name: value })}
+                    />
+                    <Text style={styles.inputDescription}>Your name</Text>
+                    <HorizontalLine/>
+                </View>
+                <View style={styles.credentialInputContainer}>
+                    <HorizontalLine/>
+                    <TextInput
+                        value={formValues.email}
+                        onChangeText={(value) => setFormValues({ ...formValues, email: value })}
+                    />
+                    <Text style={styles.inputDescription}>Email</Text>
+                    <HorizontalLine/>
+                </View>
+                <View style={styles.credentialInputContainer}>
+                    <HorizontalLine/>
+                    <TextInput
+                        value={formValues.streetAddress}
+                        onChangeText={(value) => setFormValues({ ...formValues, streetAddress: value })}
+                    />
+                    <Text style={styles.inputDescription}>Address</Text>
+                    <HorizontalLine/>
+                </View>
+                <View style={styles.credentialInputContainer}>
+                    <HorizontalLine/>
+                    <TextInput
+                        value={formValues.houseNum}
+                        onChangeText={(value) => setFormValues({ ...formValues, houseNum: value })}
+                    />
+                    <Text style={styles.inputDescription}>House/Apartment No.</Text>
+                    <HorizontalLine/>
+                </View>
+                <View style={styles.credentialInputContainer}>
+                    <HorizontalLine/>
+                    <TextInput
+                        value={formValues.apartmentSide}
+                        onChangeText={(value) => setFormValues({ ...formValues, apartmentSide: value })}
+                    />
+                    <Text style={styles.inputDescription}>Apartment side (fill out only if possible)</Text>
+                    <HorizontalLine/>
+                </View>
+                <View style={styles.credentialInputContainer}>
+                    <HorizontalLine/>
+                    <TextInput
+                        value={formValues.zipCode}
+                        onChangeText={(value) => setFormValues({ ...formValues, zipCode: value })}
+                    />
+                    <Text style={styles.inputDescription}>ZipCode</Text>
+                    <HorizontalLine/>
+                </View>
+                <View style={styles.credentialInputContainer}>
+                    <HorizontalLine/>
+                    <TextInput
+                        value={formValues.city}
+                        onChangeText={(value) => setFormValues({ ...formValues, city: value })}
+                    />
+                    <Text style={styles.inputDescription}>City</Text>
+                    <HorizontalLine/>
+                </View>
+                <View style={styles.credentialInputContainer}>
+                    <HorizontalLine/>
+                    <TextInput
+                        value={country}
+                        onChangeText={(value) => setFormValues({ ...formValues, country: value })}
+                    />
+                    <Text style={styles.inputDescription}>Country</Text>
+                    <HorizontalLine/>
+                </View>
+                <View style={{alignItems: 'center'}}>
+                    <TouchableOpacity
+                        style={styles.button}
+                        onPress={validateAndSetAccountInfo}
                     >
-                        <TextInput
-                            style={styles.input}
-                            placeholder="Email"
-                            value={formValues.email}
-                            onChangeText={(value) => setFormValues({...formValues, email: value})}
-                        />
-                        <TextInput
-                            style={styles.input}
-                            placeholder="Password"
-                            secureTextEntry
-                            value={formValues.password}
-                            onChangeText={(value) => setFormValues({...formValues, password: value})}
-                        />
-                        <TextInput
-                            style={styles.input}
-                            placeholder="First name"
-                            value={formValues.firstName}
-                            onChangeText={(value) => setFormValues({...formValues, firstName: value})}
-                        />
-                        <TextInput
-                            style={styles.input}
-                            placeholder="Last name"
-                            value={formValues.lastName}
-                            onChangeText={(value) => setFormValues({...formValues, lastName: value})}
-                        />
-                        <TextInput
-                            style={styles.input}
-                            placeholder="Street address"
-                            value={formValues.streetAddress}
-                            onChangeText={(value) => setFormValues({...formValues, streetAddress: value})}
-                        />
-                        <TextInput
-                            style={styles.input}
-                            placeholder="House Number"
-                            value={formValues.houseNum}
-                            onChangeText={(value) => setFormValues({...formValues, houseNum: value})}
-                        />
-                        <TextInput
-                            style={styles.input}
-                            placeholder="Apartment floor"
-                            value={formValues.apartmentFloor}
-                            onChangeText={(value) => setFormValues({...formValues, apartmentFloor: value})}
-                        />
-                        <TextInput
-                            style={styles.input}
-                            placeholder="Post number"
-                            value={formValues.postNum}
-                            onChangeText={(value) => setFormValues({...formValues, postNum: value})}
-                        />
-                        <TextInput
-                            style={styles.input}
-                            placeholder="City"
-                            value={formValues.city}
-                            onChangeText={(value) => setFormValues({...formValues, city: value})}
-                        />
-                        <TextInput
-                            style={styles.input}
-                            placeholder="Country"
-                            value={country}
-                            onChangeText={(value) => setCountry(value)}
-                        />
-                        <TextInput
-                            style={styles.input}
-                            placeholder="Phone number"
-                            value={formValues.phoneNum}
-                            onChangeText={(value) => setFormValues({...formValues, phoneNum: value})}
-                        />
-                        <TouchableOpacity
-                            style={[styles.button, {margin: 50, marginBottom: 200}]}
-                            onPress={handleSignUp}>
-                            <Text style={styles.buttonText}>Sign Up</Text>
-                        </TouchableOpacity>
-                        {error && <Text>{error}</Text>}
-                    </ScrollView>
-                </SlideUp>
-            </KeyboardAvoidingView>
+                        <Text style={styles.buttonText}>Apply Changes</Text>
+                    </TouchableOpacity>
+                </View>
+            </ScrollView>
         </ImageBackground>
     );
 }

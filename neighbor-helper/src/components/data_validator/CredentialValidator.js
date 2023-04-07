@@ -14,18 +14,16 @@ export const validate = (field, value) => {
         case 'password':
             return validator.isLength(value, {min: 8}) && validator.matches(value, passwordPattern);
         case 'streetAddress':
-            return validator.isAlpha(value, 'da-DK');
+            return validator.matches(value, namePattern);
         case 'houseNum':
             return validator.isNumeric(value, {no_symbols: true});
-        case 'apartmentFloor':
+        case 'apartmentSide':
             return validator.isAlphanumeric(value, {ignore: ' .,'});
-        case 'postNum':
+        case 'zipCode':
             return validator.isAlphanumeric(value);
         case 'city':
             return validator.isAlpha(value, 'da-DK');
         case 'country':
             return validator.isAlpha(value, 'da-DK');
-        case 'phoneNum':
-            return validator.isMobilePhone(value, 'da-DK', {strictMode: true});
     }
 }

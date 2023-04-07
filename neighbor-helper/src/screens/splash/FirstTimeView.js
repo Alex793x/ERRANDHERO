@@ -15,7 +15,7 @@ const FirstTimeView = ({ navigation }) => {
         >
             <View style={styles.contentContainer}>
                 <TypingText
-                    text="ERANDHERO"
+                    text="ERRANDHERO"
                     typingSpeed={300}
                     deletingSpeed={100}
                     style={styles.title}

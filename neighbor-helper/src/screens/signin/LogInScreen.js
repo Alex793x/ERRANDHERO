@@ -1,11 +1,26 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {ImageBackground, Text, TextInput, TouchableOpacity, View} from "react-native";
 import {auth} from "../../firebase/firebaseConfig";
-import {signInWithEmailAndPassword} from "firebase/auth";
+import {onAuthStateChanged, signInWithEmailAndPassword} from "firebase/auth";
 import {styles} from "./styles";
 import SlideUp from "../../components/slideupeffect/SlideUpEffect";
+import {ModalBox} from "../../components/ModalBox";
 
 const LogInScreen = ({navigation}) => {
+    useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth, (user) => {
+            if (user) {
+                // User is logged in, navigate to the main screen
+                navigation.navigate('BottomTabNavigator');
+            } else {
+                // No user is logged in, stay on the login screen
+            }
+        });
+
+        // Clean up the listener when the component unmounts
+        return () => unsubscribe();
+    }, []);
+    const [showForgotPasswordModal, setShowForgotPasswordModal] = useState(false);
     const [email, verifyEmail] = useState('');
     const [password, verifyPassword] = useState('');
     const [error, setError] = useState('');
@@ -16,7 +31,7 @@ const LogInScreen = ({navigation}) => {
                 // handleSignIn successful
                 const user = userCredential.user;
                 console.log("Successfully login -  ", user)
-                navigation.navigate('HomeScreen')
+                navigation.navigate('BottomTabNavigator')
             })
             .catch((error) => {
                 //handleSignIn error
@@ -32,6 +47,14 @@ const LogInScreen = ({navigation}) => {
             style={[styles.container, {height: '120%'}]}
             source={require('../../assets/images/LogInBackground.png')}
         >
+                <ModalBox
+                    visible={showForgotPasswordModal}
+                    setVisible={setShowForgotPasswordModal}
+                    showInput={true}
+                    input="Enter Your Email To Reset Your Password"
+                    submitText="Submit"
+                    closingText={"Thanks, we have sent you an email"}
+                />
             <SlideUp>
                 <View style={styles.contentContainer}>
                     <View style={styles.headerContainer}>
@@ -69,7 +92,7 @@ const LogInScreen = ({navigation}) => {
                     </TouchableOpacity>
                     {error && <Text>{error}</Text>}
                     <View style={styles.helpContainer}>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={() => setShowForgotPasswordModal(true)}>
                             <Text style={[styles.credentialHeader, {paddingBottom: 5}]}>
                                 Forgot Password ?
                             </Text>

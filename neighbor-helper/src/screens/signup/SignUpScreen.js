@@ -37,7 +37,7 @@ const SignUpScreen = ({navigation}) => {
                     const user = userCredential.user;
                     console.log('Sign up successfully - ', user);
                     setDoc(doc(db, 'users', user.uid), formValues);
-                    navigation.navigate('HomeScreen');
+                    navigation.navigate('AccountScreen');
                 })
                 .catch((error) => {
                     const errorCode = error.code;
